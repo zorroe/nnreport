@@ -7,7 +7,9 @@
     "dev:client": "pnpm -F client dev",
     "dev:server": "pnpm -F server start:dev",
     "format": "prettier --write --cache .",
-    "format-check": "prettier --check --cache ."
+    "format-check": "prettier --check --cache .",
+    "db:generate": "pnpm -F @nnreport/db generate",
+    "db:migrate": "pnpm -F @nnreport/db migrate"
   },
   "keywords": [],
   "author": "",
