@@ -8,8 +8,8 @@
     "dev:server": "pnpm -F server start:dev",
     "format": "prettier --write --cache .",
     "format-check": "prettier --check --cache .",
-    "db:generate": "pnpm -F @nnreport/db generate",
-    "db:migrate": "pnpm -F @nnreport/db migrate"
+    "db:generate": "pnpm -F @nnreport/db drizzle:generate",
+    "db:migrate": "pnpm -F @nnreport/db drizzle:migrate"
   },
   "keywords": [],
   "author": "",
