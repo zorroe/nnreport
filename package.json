@@ -6,6 +6,8 @@
   "scripts": {
     "dev:client": "pnpm -F client dev",
     "dev:server": "pnpm -F server start:dev",
+    "build:client": "pnpm -F client build",
+    "build:server": "pnpm -F server build",
     "format": "prettier --write --cache .",
     "format-check": "prettier --check --cache .",
     "db:generate": "pnpm -F @nnreport/db drizzle:generate",
