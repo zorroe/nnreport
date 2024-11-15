@@ -1,19 +1,30 @@
 <script setup lang="ts">
-const route = useRoute();
+const colorMode = useColorMode();
+const isDark = computed({
+  get() {
+    return colorMode.value === "dark";
+  },
+  set() {
+    colorMode.preference = colorMode.value === "dark" ? "light" : "dark";
+  },
+});
 </script>
 
 <template>
   <div>
+    <UButton
+      :icon="isDark ? 'i-heroicons-moon-20-solid' : 'i-heroicons-sun-20-solid'"
+      color="gray"
+      variant="ghost"
+      aria-label="Theme"
+      @click="isDark = !isDark"
+    />
     <UAlert
-    icon="i-heroicons-command-line"
-    color="primary"
-    variant="solid"
-    title="Heads up!"
-    description="You can add components to your app using the cli."
-  />
-    <UIcon name="i-mdi:account" class="w-5 h-5" />
-    <h1>Nuxt Routing set up successfully!</h1>
-    <p>Current route: {{ route.path }}</p>
-    <a href="https://nuxt.com/docs/getting-started/routing" target="_blank">Learn more about Nuxt Routing</a>
+      icon="i-heroicons-command-line"
+      color="primary"
+      variant="solid"
+      title="Heads up!"
+      description="You can add components to your app using the cli."
+    />
   </div>
 </template>

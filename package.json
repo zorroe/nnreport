@@ -9,15 +9,17 @@
     "format": "prettier --write --cache .",
     "format-check": "prettier --check --cache .",
     "db:generate": "pnpm -F @nnreport/db drizzle:generate",
-    "db:migrate": "pnpm -F @nnreport/db drizzle:migrate"
+    "db:migrate": "pnpm -F @nnreport/db drizzle:migrate",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
+    "dotenv": "^16.4.5",
+    "husky": "^9.1.6",
     "prettier": "^3.2.5",
-    "prettier-plugin-tailwindcss": "0.5.13",
-    "dotenv": "^16.4.5"
+    "prettier-plugin-tailwindcss": "0.5.13"
   }
 }
