@@ -9,7 +9,6 @@ export default {
   printWidth: 100,
   singleAttributePerLine: true,
   plugins: ["@ianvs/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
-  tailwindConfig: "./apps/client/tailwind.config.js",
   importOrderParserPlugins: ["typescript", "jsx", "decorators-legacy"],
   importOrderTypeScriptVersion: "5.0.0",
   importOrder: [
