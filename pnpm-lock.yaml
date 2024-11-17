@@ -153,12 +153,6 @@ importers:
         specifier: ^4.19.2
         version: 4.19.2
 
-  packages/minio:
-    dependencies:
-      minio:
-        specifier: ^8.0.2
-        version: 8.0.2
-
   packages/schema:
     dependencies:
       '@paralleldrive/cuid2':

@@ -1,11 +1,10 @@
 <script setup lang="ts">
 const colorMode = useColorMode();
 
-const upload = () => {
-  $fetch("/api/upload2minio").then((res) => {
-    console.log(res);
-  });
-};
+const { bucketList, uploadFile } = useMinio();
+
+const file = ref();
+const fileName = ref();
 
 const isDark = computed({
   get() {
@@ -15,6 +14,12 @@ const isDark = computed({
     colorMode.preference = colorMode.value === "dark" ? "light" : "dark";
   },
 });
+
+const selectFile = (files: any) => {
+  const file = files[0];
+  fileName.value = file.name;
+  uploadFile(file, "report");
+};
 </script>
 
 <template>
@@ -48,12 +53,13 @@ const isDark = computed({
       title="Heads up!"
       description="You can add components to your app using the cli."
     />
-    <UButton
-      :icon="isDark ? 'i-heroicons-moon-20-solid' : 'i-heroicons-sun-20-solid'"
-      color="gray"
-      variant="ghost"
-      aria-label="Theme"
-      @click="upload"
+    <div>{{ bucketList }}</div>
+    <UInput
+      type="file"
+      size="sm"
+      icon="i-heroicons-folder"
+      @change="selectFile"
+      ref="file"
     />
   </div>
 </template>
