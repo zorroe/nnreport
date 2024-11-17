@@ -14,7 +14,7 @@
     "@vueuse/core": "^11.2.0",
     "@vueuse/nuxt": "^11.2.0",
     "unocss": "^0.64.1",
-    "ali-oss": "^6.21.0"
+    "minio": "^8.0.2"
   },
   "dependencies": {
     "@iconify-json/mdi": "^1.2.1",
