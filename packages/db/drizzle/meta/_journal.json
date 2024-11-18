@@ -8,6 +8,13 @@
       "when": 1731659050851,
       "tag": "0000_equal_daimon_hellstrom",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1731910571492,
+      "tag": "0001_thick_the_enforcers",
+      "breakpoints": true
     }
   ]
 }
