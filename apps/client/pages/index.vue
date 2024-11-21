@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import { extractFileNameAndFormat } from "~/utils/file";
 
-const { bucketList, uploadFile } = useMinio();
+const { bucketList } = useMinio();
 
-const selectFile = async (files: any) => {
+const selectFile = async (files: File[]) => {
   const file = files[0];
   const { filename, format } = extractFileNameAndFormat(file.name);
-  if (filename && format) {
-    const uuid = crypto.randomUUID();
-    uploadFile(file, `${uuid}.${format}`);
-  }
+  const preSignUrl = await $fetch("/api/minio/preSignUrl");
 };
 </script>
 
