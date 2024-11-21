@@ -7,7 +7,7 @@ export const extractFileNameAndFormat = (filename: string) => {
   if (!filename || typeof filename !== "string") {
     return {
       filename: "",
-      format: "",
+      format: "unknown",
     };
   }
 
@@ -16,7 +16,7 @@ export const extractFileNameAndFormat = (filename: string) => {
   if (lastDotIndex === -1) {
     return {
       filename: filename,
-      format: "",
+      format: "unknown",
     };
   }
 
@@ -27,4 +27,8 @@ export const extractFileNameAndFormat = (filename: string) => {
     filename: name,
     format: format,
   };
+};
+
+export const extractFormat = (filename: string) => {
+  return extractFileNameAndFormat(filename).format;
 };
