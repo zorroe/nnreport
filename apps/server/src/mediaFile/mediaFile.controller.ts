@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Req } from "@nestjs/common";
 
 import { CreateMediaFileDto } from "./dto/createMediaFile.dto";
 import { MediaFileService } from "./mediaFile.service";
@@ -8,7 +8,19 @@ export class MediaFileController {
   constructor(private mediaFileService: MediaFileService) {}
 
   @Post("/insert")
-  getHello(@Body() mediaFileDto: CreateMediaFileDto) {
+  insert(@Body() mediaFileDto: CreateMediaFileDto) {
     return this.mediaFileService.insert(mediaFileDto);
+  }
+
+  @Get("/list")
+  list() {
+    return this.mediaFileService.list();
+  }
+
+  @Delete("/delete")
+  delete(@Body() body: any) {
+    const { filename } = body;
+    console.log(filename);
+    return this.mediaFileService.delete(filename);
   }
 }

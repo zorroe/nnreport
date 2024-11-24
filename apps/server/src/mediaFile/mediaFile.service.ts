@@ -1,5 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { mediaFileTable as mediaFileSchema } from "@nnreport/schema";
+import { mediaFileTable } from "@nnreport/schema";
+import { eq } from "drizzle-orm";
 
 import { DB, DbType } from "../global/providers/db.provider";
 
@@ -7,11 +8,15 @@ import { DB, DbType } from "../global/providers/db.provider";
 export class MediaFileService {
   constructor(@Inject(DB) private db: DbType) {}
 
-  getHello(): string {
-    return "Hello World!!";
+  insert(mediaFileDto) {
+    return this.db.insert(mediaFileTable).values(mediaFileDto).returning();
   }
 
-  insert(mediaFileDto) {
-    return this.db.insert(mediaFileSchema).values(mediaFileDto).returning();
+  list() {
+    return this.db.select().from(mediaFileTable).limit(5);
+  }
+
+  delete(filename: string) {
+    return this.db.delete(mediaFileTable).where(eq(mediaFileTable.filename, filename));
   }
 }
