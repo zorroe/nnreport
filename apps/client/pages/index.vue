@@ -1,15 +1,24 @@
 <script setup lang="ts">
-import { minioUpload } from "~/api/minio";
+import { download } from "~/api/http";
+import { minioDownload, minioUpload } from "~/api/minio";
 import { extractFormat } from "~/utils/file";
 
 const { bucketList } = useMinio();
+const fileName = ref("8f5b693e-26b4-49c4-8b0e-5dc48b387245.exe");
 
 const selectFile = async (files: File[]) => {
   const file = files[0];
   const format = extractFormat(file.name);
   const filename = `${crypto.randomUUID()}.${format}`;
-  const preSignUrl = await $fetch("/api/minio/preSignUrl", { params: { filename } });
-  minioUpload(preSignUrl, file);
+  const preSignedUrl = await $fetch("/api/minio/preSignedUrl", { params: { filename } });
+  await minioUpload(preSignedUrl, file);
+};
+
+const downLoadFile = async () => {
+  const preSignedGetUrl = await $fetch("/api/minio/preSignedGetUrl", {
+    params: { filename: fileName.value },
+  });
+  await download(preSignedGetUrl, fileName.value);
 };
 </script>
 
@@ -22,5 +31,7 @@ const selectFile = async (files: File[]) => {
       icon="i-heroicons-folder"
       @change="selectFile"
     />
+    <UInput v-model="fileName" />
+    <UButton @click="downLoadFile">Button</UButton>
   </div>
 </template>

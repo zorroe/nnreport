@@ -1,6 +1,7 @@
 import type { $Fetch } from "ofetch";
 
 import { useRuntimeConfig } from "#app";
+import { saveAs } from "file-saver";
 import { ofetch } from "ofetch";
 
 // import { getToken } from "~/services/auth";
@@ -40,6 +41,20 @@ let httpStatusErrorHandler: HttpStatusErrorHandler;
 
 export function injectHttpStatusErrorHandler(handler: HttpStatusErrorHandler) {
   httpStatusErrorHandler = handler;
+}
+
+// 通用下载方法
+export async function download(url: string, filename: string) {
+  const http = getHttp();
+  http(url, {
+    responseType: "blob",
+  })
+    .then((res) => {
+      saveAs(res, filename);
+    })
+    .catch(() => {
+      console.log("下载失败");
+    });
 }
 
 export function getHttp() {
