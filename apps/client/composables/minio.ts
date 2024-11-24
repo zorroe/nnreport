@@ -5,18 +5,7 @@ export function useMinio() {
     bucketList.value = res.data.value;
   });
 
-  function uploadFile(file: File, filename: string) {
-    $fetch("/api/minio/upload", {
-      method: "POST",
-      body: file,
-      params: {
-        filename,
-      },
-    });
-  }
-
   return {
     bucketList,
-    uploadFile,
   };
 }
