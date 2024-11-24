@@ -1,3 +1,4 @@
+// @ts-ignore
 import path from "path";
 import type { Config } from "drizzle-kit";
 
