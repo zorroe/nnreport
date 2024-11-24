@@ -2,15 +2,16 @@
   "name": "@nnreport/schema",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsup"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@paralleldrive/cuid2": "2.2.2",
-    "drizzle-orm": "^0.36.1"
+    "drizzle-orm": "^0.36.0"
   }
 }

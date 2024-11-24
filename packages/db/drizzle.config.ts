@@ -6,8 +6,6 @@ import * as dotenv from "dotenv";
 
 dotenv.config({ path: path.resolve(__dirname, "../../apps/server/.env") });
 
-console.log("process.env.DATABASE_URL: ", process.env.DATABASE_URL);
-
 export default {
   schema: "../schema/src/schema/*",
   out: "./drizzle",

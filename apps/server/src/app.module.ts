@@ -1,11 +1,9 @@
 import { Module } from "@nestjs/common";
 
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
+import { GlobalModule } from "./global/global.module";
+import { MediaFileModule } from "./mediaFile/mediaFile.module";
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [MediaFileModule, GlobalModule],
 })
 export class AppModule {}

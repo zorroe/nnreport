@@ -25,26 +25,3 @@ export const minioUpload = (url: string, file: File) => {
       );
   });
 };
-
-export const minioDownload = (url: string) => {
-  const http = getHttp();
-  return new Promise((resolve, reject) => {
-    http(url, {
-      method: "get",
-      responseType: "blob",
-    })
-      .then((res) =>
-        resolve({
-          code: 200,
-          msg: "操作成功",
-          data: res,
-        }),
-      )
-      .catch(() =>
-        resolve({
-          code: 500,
-          msg: "操作失败",
-        }),
-      );
-  });
-};

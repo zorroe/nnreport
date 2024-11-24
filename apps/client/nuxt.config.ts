@@ -4,6 +4,9 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@unocss/nuxt", "@nuxt/ui", "@vueuse/nuxt"],
   runtimeConfig: {
+    public: {
+      apiBase: "http://127.0.0.1:4000",
+    },
     minio: {
       endpoint: process.env.MINIO_ENDPOINT,
       accessKey: process.env.MINIO_ACCESS_KEY,

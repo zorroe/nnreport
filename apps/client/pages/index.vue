@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { download } from "~/api/http";
-import { minioDownload, minioUpload } from "~/api/minio";
+import { addRecord } from "~/api/mediaFile";
+import { minioUpload } from "~/api/minio";
 import { extractFormat } from "~/utils/file";
 
 const { bucketList } = useMinio();
@@ -20,6 +21,10 @@ const downLoadFile = async () => {
   });
   await download(preSignedGetUrl, fileName.value);
 };
+
+const testQuery = async () => {
+  await addRecord("", "");
+};
 </script>
 
 <template>
@@ -33,5 +38,6 @@ const downLoadFile = async () => {
     />
     <UInput v-model="fileName" />
     <UButton @click="downLoadFile">Button</UButton>
+    <UButton @click="testQuery">发送请求</UButton>
   </div>
 </template>

@@ -31,8 +31,8 @@ export function setupHttp() {
       }
       return Promise.reject(response._data);
     },
-    retry: 3,
-    retryDelay: 1000,
+    // retry: 3,
+    // retryDelay: 1000,
   });
 }
 
