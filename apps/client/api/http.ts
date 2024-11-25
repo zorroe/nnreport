@@ -52,9 +52,7 @@ export async function download(url: string, filename: string) {
     .then((res) => {
       saveAs(res, filename);
     })
-    .catch(() => {
-      console.log("下载失败");
-    });
+    .catch(() => {});
 }
 
 export function getHttp() {
