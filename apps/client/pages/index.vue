@@ -1,63 +1,37 @@
 <script setup lang="ts">
-import { download } from "~/api/http";
-import { addRecordApi, deleteFileApi, listFileApi } from "~/api/mediaFile";
-import { minioUpload } from "~/api/minio";
-import { extractFormat } from "~/utils/file";
+import { type FileItem } from "@arco-design/web-vue";
 
-const files = ref<any>([]);
+import { useMinio } from "~/composables/minio";
 
-const previewOpen = ref(false);
-const previewUrl = ref("");
+const {
+  files,
+  previewUrl,
+  previewOpen,
+  uploadOpen,
+  queryFile,
+  fileToUpload,
+  downloadFile,
+  previewFile,
+  deleteFile,
+  openUploadModal,
+  confirmUpload,
+  handleClose,
+} = useMinio();
 
-const selectFile = async (files: File[]) => {
-  const file = files[0];
-  const format = extractFormat(file.name);
-  const filename = `${crypto.randomUUID()}.${format}`;
-  const preSignedUrl = await $fetch("/api/minio/preSignedUrl", { params: { filename } });
-  const { code } = (await minioUpload(preSignedUrl, file)) as any;
-  if (code === 200) {
-    const body = {
-      filename,
-      filetype: format,
-    };
-    await addRecordApi(body);
-  }
-};
-
-const downLoadFile = async (filename: string) => {
-  const preSignedGetUrl = await $fetch("/api/minio/preSignedGetUrl", {
-    params: { filename },
-  });
-  await download(preSignedGetUrl, filename);
-};
-
-const deleteFile = async (filename: string) => {
-  await deleteFileApi(filename);
-};
-
-const previewFile = async (filename: string) => {
-  previewUrl.value = await $fetch("/api/minio/preSignedGetUrl", {
-    params: { filename },
-  });
-  previewOpen.value = true;
-};
-
-const queryFile = async () => {
-  files.value = await listFileApi();
+const onChange = (fileList: FileItem[]) => {
+  fileToUpload.value = fileList;
 };
 </script>
 
 <template>
   <div>
-    <input
-      type="file"
-      @onChange="selectFile"
-    />
-    <a-button
-      type="primary"
-      @click="queryFile"
-      >Primary
-    </a-button>
+    <a-space>
+      <a-button
+        type="primary"
+        @click="openUploadModal"
+        >上传图片
+      </a-button>
+    </a-space>
     <a-table :data="files">
       <template #columns>
         <a-table-column
@@ -80,7 +54,7 @@ const queryFile = async () => {
           <template #cell="{ record }">
             <a-space>
               <a-button @click="previewFile(record.filename)">预览</a-button>
-              <a-button @click="downLoadFile(record.filename)">下载</a-button>
+              <a-button @click="downloadFile(record.filename)">下载</a-button>
               <a-button @click="deleteFile(record.filename)">删除</a-button>
             </a-space>
           </template>
@@ -94,5 +68,20 @@ const queryFile = async () => {
         v-model:visible="previewOpen"
       />
     </template>
+    <a-modal
+      v-model:visible="uploadOpen"
+      @ok="confirmUpload"
+      @close="handleClose"
+    >
+      <template #title> 上传素材</template>
+      <a-upload
+        list-type="picture-card"
+        :limit="5"
+        :auto-upload="false"
+        show-file-list
+        @change="onChange"
+        image-preview
+      />
+    </a-modal>
   </div>
 </template>

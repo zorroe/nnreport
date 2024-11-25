@@ -13,10 +13,13 @@ export class MediaFileService {
   }
 
   list() {
-    return this.db.select().from(mediaFileTable).limit(5);
+    return this.db.select().from(mediaFileTable).where(eq(mediaFileTable.deleted, "0")).limit(5);
   }
 
   delete(filename: string) {
-    return this.db.delete(mediaFileTable).where(eq(mediaFileTable.filename, filename));
+    return this.db
+      .update(mediaFileTable)
+      .set({ deleted: "1" })
+      .where(eq(mediaFileTable.filename, filename));
   }
 }

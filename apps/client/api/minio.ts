@@ -1,6 +1,12 @@
 import { getHttp } from "./http";
 
-export const minioUpload = (url: string, file: File) => {
+export const minioUpload = (url: string, file: File | undefined) => {
+  if (!file) {
+    return Promise.resolve({
+      code: 500,
+      msg: "请选择文件",
+    });
+  }
   const http = getHttp();
 
   return new Promise((resolve, reject) => {

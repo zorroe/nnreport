@@ -3,8 +3,8 @@
  * @param filename 文件名
  * @returns 文件名和文件格式
  */
-export const extractFileNameAndFormat = (filename: string) => {
-  if (!filename || typeof filename !== "string") {
+export const extractFileNameAndFormat = (filename: string | undefined) => {
+  if (!filename) {
     return {
       filename: "",
       format: "unknown",
@@ -29,6 +29,6 @@ export const extractFileNameAndFormat = (filename: string) => {
   };
 };
 
-export const extractFormat = (filename: string) => {
+export const extractFormat = (filename: string | undefined) => {
   return extractFileNameAndFormat(filename).format;
 };
