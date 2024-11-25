@@ -1,8 +1,6 @@
 <template>
   <div>
-    <UContainer>
-      <NuxtPage />
-    </UContainer>
-    <UNotifications />
+    <NuxtPage />
   </div>
 </template>
+<script setup lang="ts"></script>

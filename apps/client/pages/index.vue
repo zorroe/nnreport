@@ -4,49 +4,10 @@ import { addRecordApi, deleteFileApi, listFileApi } from "~/api/mediaFile";
 import { minioUpload } from "~/api/minio";
 import { extractFormat } from "~/utils/file";
 
-const toast = useToast();
-
-const { bucketList } = useMinio();
 const files = ref<any>([]);
 
-const columns = [
-  {
-    key: "id",
-    label: "ID",
-  },
-  {
-    key: "filename",
-    label: "文件名",
-  },
-  {
-    key: "filetype",
-    label: "文件类型",
-  },
-  {
-    key: "preview",
-    label: "预览",
-  },
-  {
-    key: "createTime",
-    label: "创建时间",
-  },
-  {
-    key: "actions",
-  },
-];
-
-const items = (row: any) => [
-  [
-    {
-      label: "下载",
-      click: () => downLoadFile(row.filename),
-    },
-    {
-      label: "删除",
-      click: () => deleteFile(row.filename),
-    },
-  ],
-];
+const previewOpen = ref(false);
+const previewUrl = ref("");
 
 const selectFile = async (files: File[]) => {
   const file = files[0];
@@ -59,9 +20,7 @@ const selectFile = async (files: File[]) => {
       filename,
       filetype: format,
     };
-    await addRecordApi(body).then(() => {
-      toast.add({ title: "上传成功" });
-    });
+    await addRecordApi(body);
   }
 };
 
@@ -72,8 +31,15 @@ const downLoadFile = async (filename: string) => {
   await download(preSignedGetUrl, filename);
 };
 
-const deleteFile = async (id: number) => {
-  await deleteFileApi(id);
+const deleteFile = async (filename: string) => {
+  await deleteFileApi(filename);
+};
+
+const previewFile = async (filename: string) => {
+  previewUrl.value = await $fetch("/api/minio/preSignedGetUrl", {
+    params: { filename },
+  });
+  previewOpen.value = true;
 };
 
 const queryFile = async () => {
@@ -83,31 +49,50 @@ const queryFile = async () => {
 
 <template>
   <div>
-    <div>{{ bucketList }}</div>
-    <UInput
+    <input
       type="file"
-      size="sm"
-      icon="i-heroicons-folder"
-      @change="selectFile"
+      @onChange="selectFile"
     />
-    <UButton @click="queryFile">查询数据</UButton>
-    <UTable
-      :rows="files"
-      :columns="columns"
-    >
-      <template #name-data="{ row }">
-        <span>{{ row.name }}</span>
+    <a-button
+      type="primary"
+      @click="queryFile"
+      >Primary
+    </a-button>
+    <a-table :data="files">
+      <template #columns>
+        <a-table-column
+          title="ID"
+          data-index="id"
+        ></a-table-column>
+        <a-table-column
+          title="文件名"
+          data-index="filename"
+        ></a-table-column>
+        <a-table-column
+          title="文件类型"
+          data-index="filetype"
+        ></a-table-column>
+        <a-table-column
+          title="上传时间"
+          data-index="createTime"
+        ></a-table-column>
+        <a-table-column title="操作">
+          <template #cell="{ record }">
+            <a-space>
+              <a-button @click="previewFile(record.filename)">预览</a-button>
+              <a-button @click="downLoadFile(record.filename)">下载</a-button>
+              <a-button @click="deleteFile(record.filename)">删除</a-button>
+            </a-space>
+          </template>
+        </a-table-column>
       </template>
-
-      <template #actions-data="{ row }">
-        <UDropdown :items="items(row)">
-          <UButton
-            color="gray"
-            variant="ghost"
-            icon="i-heroicons-ellipsis-horizontal-20-solid"
-          />
-        </UDropdown>
-      </template>
-    </UTable>
+    </a-table>
+    <template v-if="previewOpen">
+      <a-image-preview
+        :src="previewUrl"
+        :default-scale="0.8"
+        v-model:visible="previewOpen"
+      />
+    </template>
   </div>
 </template>
