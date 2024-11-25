@@ -4,6 +4,8 @@ import { addRecordApi, deleteFileApi, listFileApi } from "~/api/mediaFile";
 import { minioUpload } from "~/api/minio";
 import { extractFormat } from "~/utils/file";
 
+const toast = useToast();
+
 const { bucketList } = useMinio();
 const files = ref<any>([]);
 
@@ -58,7 +60,7 @@ const selectFile = async (files: File[]) => {
       filetype: format,
     };
     await addRecordApi(body).then(() => {
-      alert("上传成功");
+      toast.add({ title: "上传成功" });
     });
   }
 };
