@@ -10,6 +10,8 @@ const {
   uploadOpen,
   queryFile,
   fileToUpload,
+  queryParams,
+  fileTypes,
   downloadFile,
   previewFile,
   deleteFile,
@@ -20,6 +22,16 @@ const {
 
 const onChange = (fileList: FileItem[]) => {
   fileToUpload.value = fileList;
+};
+
+const handleSelectDate = (date: any) => {
+  if (date) {
+    queryParams.value.startTime = date[0];
+    queryParams.value.endTime = date[1];
+  } else {
+    queryParams.value.startTime = "";
+    queryParams.value.endTime = "";
+  }
 };
 </script>
 
@@ -32,6 +44,30 @@ const onChange = (fileList: FileItem[]) => {
         >上传图片
       </a-button>
     </a-space>
+    <a-form
+      :model="queryParams"
+      layout="inline"
+    >
+      <a-form-item
+        field="fileType"
+        label="文件类型"
+      >
+        <a-select
+          placeholder="请选择文件类型"
+          :style="{ width: '200px' }"
+        >
+          <a-option
+            v-for="fileType in fileTypes"
+            :key="fileType"
+            :value="fileType"
+            >{{ fileType }}
+          </a-option>
+        </a-select>
+      </a-form-item>
+      <a-form-item label="上传时间">
+        <a-range-picker @change="handleSelectDate" />
+      </a-form-item>
+    </a-form>
     <a-table :data="files">
       <template #columns>
         <a-table-column

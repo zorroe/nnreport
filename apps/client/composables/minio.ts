@@ -13,11 +13,12 @@ export function useMinio() {
   const previewUrl = ref("");
   const uploadOpen = ref(false);
   const fileToUpload = ref<FileItem[]>([]);
+  const fileTypes = ref<string[]>(["jpg", "png", "jpeg", "gif"]);
 
   const queryParams = ref({
     pageSize: 10,
     pageNum: 1,
-    fileType: "jpg",
+    fileType: "",
     fileName: "",
     startTime: "",
     endTime: "",
@@ -93,6 +94,8 @@ export function useMinio() {
     previewOpen,
     uploadOpen,
     fileToUpload,
+    queryParams,
+    fileTypes,
     queryFile,
     downloadFile,
     previewFile,
