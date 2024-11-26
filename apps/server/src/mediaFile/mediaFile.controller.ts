@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Req } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Query, Req } from "@nestjs/common";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
 
 import { CreateMediaFileDto } from "./dto/createMediaFile.dto";
@@ -8,7 +8,6 @@ import { MediaFileService } from "./mediaFile.service";
 export class MediaFileController {
   constructor(
     private mediaFileService: MediaFileService,
-
     @InjectPinoLogger(MediaFileService.name)
     private readonly logger: PinoLogger,
   ) {}
@@ -19,9 +18,8 @@ export class MediaFileController {
   }
 
   @Get("/list")
-  list() {
-    this.logger.info("查询媒体文件列表");
-    return this.mediaFileService.list();
+  list(@Query() params: any) {
+    return this.mediaFileService.list(params);
   }
 
   @Delete("/delete")

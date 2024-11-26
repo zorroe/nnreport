@@ -12,8 +12,8 @@ export class MediaFileService {
     return this.db.insert(mediaFileTable).values(mediaFileDto).returning();
   }
 
-  list() {
-    return this.db.select().from(mediaFileTable).where(eq(mediaFileTable.deleted, "0")).limit(5);
+  list(params: any) {
+    return this.db.select().from(mediaFileTable).where(eq(mediaFileTable.deleted, "0"));
   }
 
   delete(filename: string) {
