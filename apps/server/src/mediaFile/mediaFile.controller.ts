@@ -27,4 +27,9 @@ export class MediaFileController {
     const { filename } = body;
     return this.mediaFileService.delete(filename);
   }
+
+  @Get("/total")
+  total(@Query() params: any) {
+    return this.mediaFileService.total(params);
+  }
 }

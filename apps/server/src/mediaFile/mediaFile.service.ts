@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { mediaFileTable } from "@nnreport/schema";
-import { and, eq, gte, ilike, lte, SQL } from "drizzle-orm";
+import { and, desc, eq, gte, ilike, lte, SQL } from "drizzle-orm";
 
 import { DB, DbType } from "../global/providers/db.provider";
 
@@ -13,7 +13,7 @@ export class MediaFileService {
   }
 
   list(params: any) {
-    const { pageSize = 10, page = 1, fileType, fileName, startTime, endTime } = params;
+    const { pageSize, pageNum, fileType, fileName, startTime, endTime } = params;
     const filters: SQL[] = [];
     if (fileType) {
       filters.push(eq(mediaFileTable.filetype, fileType));
@@ -28,12 +28,24 @@ export class MediaFileService {
       filters.push(lte(mediaFileTable.createTime, endTime));
     }
     filters.push(eq(mediaFileTable.deleted, "0"));
+    console.log(
+      "=========",
+      this.db
+        .select()
+        .from(mediaFileTable)
+        .where(and(...filters))
+        .orderBy(desc(mediaFileTable.id))
+        .limit(3)
+        .offset((pageNum - 1) * pageSize)
+        .toSQL(),
+    );
     return this.db
       .select()
       .from(mediaFileTable)
       .where(and(...filters))
-      .limit(pageSize)
-      .offset((page - 1) * pageSize);
+      .orderBy(desc(mediaFileTable.id))
+      .limit(Number(pageSize))
+      .offset(Number((pageNum - 1) * pageSize));
   }
 
   delete(filename: string) {
@@ -41,5 +53,24 @@ export class MediaFileService {
       .update(mediaFileTable)
       .set({ deleted: "1" })
       .where(eq(mediaFileTable.filename, filename));
+  }
+
+  total(params: any) {
+    const { fileType, fileName, startTime, endTime } = params;
+    const filters: SQL[] = [];
+    if (fileType) {
+      filters.push(eq(mediaFileTable.filetype, fileType));
+    }
+    if (fileName) {
+      filters.push(ilike(mediaFileTable.filename, fileName));
+    }
+    if (startTime) {
+      filters.push(gte(mediaFileTable.createTime, startTime));
+    }
+    if (endTime) {
+      filters.push(lte(mediaFileTable.createTime, endTime));
+    }
+    filters.push(eq(mediaFileTable.deleted, "0"));
+    return this.db.$count(mediaFileTable, and(...filters));
   }
 }

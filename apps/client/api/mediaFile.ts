@@ -24,3 +24,10 @@ export const deleteFileApi = (filename: string) => {
     },
   });
 };
+
+export const queryTotal = (params: any) => {
+  const http = getHttp();
+  return http("/api/media-file/total", {
+    params,
+  });
+};

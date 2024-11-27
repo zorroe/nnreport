@@ -12,6 +12,7 @@ const {
   fileToUpload,
   queryParams,
   fileTypes,
+  totalNum,
   downloadFile,
   previewFile,
   deleteFile,
@@ -32,6 +33,16 @@ const handleSelectDate = (date: any) => {
     queryParams.value.startTime = "";
     queryParams.value.endTime = "";
   }
+};
+
+const handlePageChange = (page: number) => {
+  queryParams.value.pageNum = page;
+  queryFile();
+};
+
+const handlePageSizeChange = (size: number) => {
+  queryParams.value.pageSize = size;
+  queryFile();
 };
 </script>
 
@@ -101,6 +112,12 @@ const handleSelectDate = (date: any) => {
         </a-table-column>
       </template>
     </a-table>
+    <a-pagination
+      :total="totalNum"
+      :page-size="queryParams.pageSize"
+      @change="handlePageChange"
+      @page-size-change="handlePageSizeChange"
+    />
     <template v-if="previewOpen">
       <a-image-preview
         :src="previewUrl"

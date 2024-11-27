@@ -3,7 +3,7 @@ import type { FileItem } from "@arco-design/web-vue";
 import { Message } from "@arco-design/web-vue";
 
 import { download } from "~/api/http";
-import { addRecordApi, deleteFileApi, listFileApi } from "~/api/mediaFile";
+import { addRecordApi, deleteFileApi, listFileApi, queryTotal } from "~/api/mediaFile";
 import { minioUpload } from "~/api/minio";
 import { extractFormat } from "~/utils/file";
 
@@ -14,9 +14,10 @@ export function useMinio() {
   const uploadOpen = ref(false);
   const fileToUpload = ref<FileItem[]>([]);
   const fileTypes = ref<string[]>(["jpg", "png", "jpeg", "gif"]);
+  const totalNum = ref(0);
 
   const queryParams = ref({
-    pageSize: 10,
+    pageSize: 3,
     pageNum: 1,
     fileType: "",
     fileName: "",
@@ -24,18 +25,9 @@ export function useMinio() {
     endTime: "",
   });
 
-  const nextPage = async () => {
-    queryParams.value.pageNum += 1;
-    await queryFile();
-  };
-
-  const prevPage = async () => {
-    queryParams.value.pageNum -= 1;
-    await queryFile();
-  };
-
   const queryFile = async () => {
     files.value = await listFileApi(queryParams.value);
+    await queryTotalNum();
   };
 
   const downloadFile = async (filename: string) => {
@@ -86,6 +78,10 @@ export function useMinio() {
     queryFile().then();
   };
 
+  const queryTotalNum = async () => {
+    totalNum.value = await queryTotal(queryParams.value);
+    console.log(totalNum.value);
+  };
   queryFile().then();
 
   return {
@@ -96,6 +92,7 @@ export function useMinio() {
     fileToUpload,
     queryParams,
     fileTypes,
+    totalNum,
     queryFile,
     downloadFile,
     previewFile,
