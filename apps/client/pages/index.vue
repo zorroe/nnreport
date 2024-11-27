@@ -55,6 +55,7 @@ const handleSelectDate = (date: any) => {
         <a-select
           placeholder="请选择文件类型"
           :style="{ width: '200px' }"
+          v-model:model-value="queryParams.fileType"
         >
           <a-option
             v-for="fileType in fileTypes"
@@ -66,6 +67,9 @@ const handleSelectDate = (date: any) => {
       </a-form-item>
       <a-form-item label="上传时间">
         <a-range-picker @change="handleSelectDate" />
+      </a-form-item>
+      <a-form-item>
+        <a-button @click="queryFile">查询</a-button>
       </a-form-item>
     </a-form>
     <a-table :data="files">
