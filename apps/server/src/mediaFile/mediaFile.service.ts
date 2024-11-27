@@ -3,6 +3,7 @@ import { mediaFileTable } from "@nnreport/schema";
 import { and, desc, eq, gte, ilike, lte, SQL } from "drizzle-orm";
 
 import { DB, DbType } from "../global/providers/db.provider";
+import { QueryMediaFileDto } from "./dto/mediaFile.dto";
 
 @Injectable()
 export class MediaFileService {
@@ -12,7 +13,7 @@ export class MediaFileService {
     return this.db.insert(mediaFileTable).values(mediaFileDto).returning();
   }
 
-  list(params: any) {
+  list(params: QueryMediaFileDto) {
     const { pageSize, pageNum, fileType, fileName, startTime, endTime } = params;
     const filters: SQL[] = [];
     if (fileType) {
@@ -28,17 +29,6 @@ export class MediaFileService {
       filters.push(lte(mediaFileTable.createTime, endTime));
     }
     filters.push(eq(mediaFileTable.deleted, "0"));
-    console.log(
-      "=========",
-      this.db
-        .select()
-        .from(mediaFileTable)
-        .where(and(...filters))
-        .orderBy(desc(mediaFileTable.id))
-        .limit(3)
-        .offset((pageNum - 1) * pageSize)
-        .toSQL(),
-    );
     return this.db
       .select()
       .from(mediaFileTable)

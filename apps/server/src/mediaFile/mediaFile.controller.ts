@@ -1,7 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Post, Query, Req } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Post, Query } from "@nestjs/common";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
 
-import { CreateMediaFileDto } from "./dto/createMediaFile.dto";
+import { CreateMediaFileDto, QueryMediaFileDto } from "./dto/mediaFile.dto";
 import { MediaFileService } from "./mediaFile.service";
 
 @Controller("/api/media-file")
@@ -18,7 +18,7 @@ export class MediaFileController {
   }
 
   @Get("/list")
-  list(@Query() params: any) {
+  list(@Query() params: QueryMediaFileDto) {
     return this.mediaFileService.list(params);
   }
 

@@ -7,3 +7,12 @@ export class CreateMediaFileDto {
   updateTime?: String;
   deleted?: String;
 }
+
+export class QueryMediaFileDto {
+  pageSize: number;
+  pageNum: number;
+  fileType?: string;
+  fileName?: string;
+  startTime?: Date;
+  endTime?: Date;
+}
