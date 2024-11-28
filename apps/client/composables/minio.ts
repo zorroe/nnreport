@@ -17,7 +17,7 @@ export function useMinio() {
   const totalNum = ref(0);
 
   const queryParams = ref({
-    pageSize: 3,
+    pageSize: 10,
     pageNum: 1,
     fileType: "",
     fileName: "",
@@ -26,8 +26,10 @@ export function useMinio() {
   });
 
   const queryFile = async () => {
-    files.value = await listFileApi(queryParams.value);
-    await queryTotalNum();
+    const { data: fileList } = await listFileApi(queryParams.value);
+    const { data: total } = await queryTotal(queryParams.value);
+    files.value = fileList;
+    totalNum.value = total;
   };
 
   const downloadFile = async (filename: string) => {
@@ -78,10 +80,18 @@ export function useMinio() {
     queryFile().then();
   };
 
-  const queryTotalNum = async () => {
-    totalNum.value = await queryTotal(queryParams.value);
-    console.log(totalNum.value);
+  const resetQuery = () => {
+    queryParams.value = {
+      pageSize: 10,
+      pageNum: 1,
+      fileType: "",
+      fileName: "",
+      startTime: "",
+      endTime: "",
+    };
+    queryFile().then();
   };
+
   queryFile().then();
 
   return {
@@ -100,5 +110,6 @@ export function useMinio() {
     openUploadModal,
     confirmUpload,
     handleClose,
+    resetQuery,
   };
 }

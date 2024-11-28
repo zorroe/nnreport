@@ -29,6 +29,13 @@
       "when": 1732451002137,
       "tag": "0003_bright_magdalene",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1732765212124,
+      "tag": "0004_dizzy_callisto",
+      "breakpoints": true
     }
   ]
 }

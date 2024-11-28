@@ -1,5 +1,6 @@
 import type { $Fetch } from "ofetch";
 
+import { Message } from "@arco-design/web-vue";
 import { useRuntimeConfig } from "#app";
 import { saveAs } from "file-saver";
 import { ofetch } from "ofetch";

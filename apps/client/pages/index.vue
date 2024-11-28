@@ -19,6 +19,7 @@ const {
   openUploadModal,
   confirmUpload,
   handleClose,
+  resetQuery,
 } = useMinio();
 
 const onChange = (fileList: FileItem[]) => {
@@ -80,10 +81,28 @@ const handlePageSizeChange = (size: number) => {
         <a-range-picker @change="handleSelectDate" />
       </a-form-item>
       <a-form-item>
-        <a-button @click="queryFile">查询</a-button>
+        <a-button @click="resetQuery">重置</a-button>
+        <a-button
+          type="primary"
+          @click="queryFile"
+          >查询</a-button
+        >
       </a-form-item>
     </a-form>
-    <a-table :data="files">
+    <a-table
+      :data="files"
+      :pagination="{
+        total: totalNum,
+        pageSize: queryParams.pageSize,
+        showPageSize: true,
+        showTotal: true,
+        showJumper: true,
+        pageSizeOptions: [10, 20, 30, 50],
+        current: queryParams.pageNum,
+      }"
+      @page-change="handlePageChange"
+      @page-size-change="handlePageSizeChange"
+    >
       <template #columns>
         <a-table-column
           title="ID"
@@ -112,12 +131,6 @@ const handlePageSizeChange = (size: number) => {
         </a-table-column>
       </template>
     </a-table>
-    <a-pagination
-      :total="totalNum"
-      :page-size="queryParams.pageSize"
-      @change="handlePageChange"
-      @page-size-change="handlePageSizeChange"
-    />
     <template v-if="previewOpen">
       <a-image-preview
         :src="previewUrl"
