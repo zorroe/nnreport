@@ -28,11 +28,11 @@ const onChange = (fileList: FileItem[]) => {
 
 const handleSelectDate = (date: any) => {
   if (date) {
-    queryParams.value.startTime = date[0];
-    queryParams.value.endTime = date[1];
+    queryParams.value.startDate = date[0];
+    queryParams.value.endDate = date[1];
   } else {
-    queryParams.value.startTime = "";
-    queryParams.value.endTime = "";
+    queryParams.value.startDate = "";
+    queryParams.value.endDate = "";
   }
 };
 

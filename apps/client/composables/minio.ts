@@ -21,8 +21,8 @@ export function useMinio() {
     pageNum: 1,
     fileType: "",
     fileName: "",
-    startTime: "",
-    endTime: "",
+    startDate: "",
+    endDate: "",
   });
 
   const queryFile = async () => {
@@ -86,8 +86,8 @@ export function useMinio() {
       pageNum: 1,
       fileType: "",
       fileName: "",
-      startTime: "",
-      endTime: "",
+      startDate: "",
+      endDate: "",
     };
     queryFile().then();
   };

@@ -1,0 +1,2 @@
+ALTER TABLE "media_file" ALTER COLUMN "create_time" SET DATA TYPE timestamp(2) with time zone;--> statement-breakpoint
+ALTER TABLE "media_file" ALTER COLUMN "update_time" SET DATA TYPE timestamp(2) with time zone;

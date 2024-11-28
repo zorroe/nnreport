@@ -13,6 +13,6 @@ export class QueryMediaFileDto {
   pageNum: number;
   fileType?: string;
   fileName?: string;
-  startTime?: string;
-  endTime?: string;
+  startDate?: Date;
+  endDate?: Date;
 }

@@ -2,7 +2,7 @@ import { NestFactory } from "@nestjs/core";
 import { Logger } from "nestjs-pino";
 
 import { AppModule } from "./app.module";
-import { ResultFormatInterceptor } from "./utils/interceptor/result-format.interceptor";
+import { ResultFormatInterceptor } from "./utils/interceptor/resultFormat.interceptor";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });

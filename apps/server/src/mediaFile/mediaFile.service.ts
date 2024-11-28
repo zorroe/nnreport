@@ -1,10 +1,8 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { mediaFileTable } from "@nnreport/schema";
-import * as dayjs from "dayjs";
 import { and, desc, eq, gte, ilike, lte, SQL } from "drizzle-orm";
 
 import { DB, DbType } from "../global/providers/db.provider";
-import { QueryMediaFileDto } from "./dto/mediaFile.dto";
 
 @Injectable()
 export class MediaFileService {
@@ -14,8 +12,8 @@ export class MediaFileService {
     return this.db.insert(mediaFileTable).values(mediaFileDto).returning();
   }
 
-  list(params: QueryMediaFileDto) {
-    const { pageSize, pageNum, fileType, fileName, startTime, endTime } = params;
+  list(params: any) {
+    const { pageSize, pageNum, fileType, fileName, startDate, endDate } = params;
     const filters: SQL[] = [];
     if (fileType) {
       filters.push(eq(mediaFileTable.filetype, fileType));
@@ -23,11 +21,11 @@ export class MediaFileService {
     if (fileName) {
       filters.push(ilike(mediaFileTable.filename, fileName));
     }
-    if (startTime) {
-      filters.push(gte(mediaFileTable.createTime, dayjs(startTime).toDate()));
+    if (startDate) {
+      filters.push(gte(mediaFileTable.createTime, startDate));
     }
-    if (endTime) {
-      filters.push(lte(mediaFileTable.createTime, dayjs(endTime).toDate()));
+    if (endDate) {
+      filters.push(lte(mediaFileTable.createTime, endDate));
     }
     filters.push(eq(mediaFileTable.deleted, "0"));
     return this.db
@@ -47,7 +45,7 @@ export class MediaFileService {
   }
 
   total(params: any) {
-    const { fileType, fileName, startTime, endTime } = params;
+    const { fileType, fileName, startDate, endDate } = params;
     const filters: SQL[] = [];
     if (fileType) {
       filters.push(eq(mediaFileTable.filetype, fileType));
@@ -55,21 +53,11 @@ export class MediaFileService {
     if (fileName) {
       filters.push(ilike(mediaFileTable.filename, fileName));
     }
-    if (startTime) {
-      filters.push(
-        gte(
-          mediaFileTable.createTime,
-          dayjs(startTime).set("hour", 0).set("minute", 0).set("second", 0).toDate(),
-        ),
-      );
+    if (startDate) {
+      filters.push(gte(mediaFileTable.createTime, startDate));
     }
-    if (endTime) {
-      filters.push(
-        lte(
-          mediaFileTable.createTime,
-          dayjs(endTime).set("hour", 23).set("minute", 59).set("second", 59).toDate(),
-        ),
-      );
+    if (endDate) {
+      filters.push(lte(mediaFileTable.createTime, endDate));
     }
     filters.push(eq(mediaFileTable.deleted, "0"));
     return this.db.$count(mediaFileTable, and(...filters));
