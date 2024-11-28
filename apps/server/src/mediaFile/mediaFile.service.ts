@@ -1,5 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { mediaFileTable } from "@nnreport/schema";
+import * as dayjs from "dayjs";
 import { and, desc, eq, gte, ilike, lte, SQL } from "drizzle-orm";
 
 import { DB, DbType } from "../global/providers/db.provider";
@@ -23,17 +24,17 @@ export class MediaFileService {
       filters.push(ilike(mediaFileTable.filename, fileName));
     }
     if (startTime) {
-      filters.push(gte(mediaFileTable.createTime, startTime));
+      filters.push(gte(mediaFileTable.createTime, dayjs(startTime).toDate()));
     }
     if (endTime) {
-      filters.push(lte(mediaFileTable.createTime, endTime));
+      filters.push(lte(mediaFileTable.createTime, dayjs(endTime).toDate()));
     }
     filters.push(eq(mediaFileTable.deleted, "0"));
     return this.db
       .select()
       .from(mediaFileTable)
       .where(and(...filters))
-      .orderBy(desc(mediaFileTable.id))
+      .orderBy(desc(mediaFileTable.updateTime))
       .limit(Number(pageSize))
       .offset(Number((pageNum - 1) * pageSize));
   }
@@ -55,10 +56,20 @@ export class MediaFileService {
       filters.push(ilike(mediaFileTable.filename, fileName));
     }
     if (startTime) {
-      filters.push(gte(mediaFileTable.createTime, startTime));
+      filters.push(
+        gte(
+          mediaFileTable.createTime,
+          dayjs(startTime).set("hour", 0).set("minute", 0).set("second", 0).toDate(),
+        ),
+      );
     }
     if (endTime) {
-      filters.push(lte(mediaFileTable.createTime, endTime));
+      filters.push(
+        lte(
+          mediaFileTable.createTime,
+          dayjs(endTime).set("hour", 23).set("minute", 59).set("second", 59).toDate(),
+        ),
+      );
     }
     filters.push(eq(mediaFileTable.deleted, "0"));
     return this.db.$count(mediaFileTable, and(...filters));
